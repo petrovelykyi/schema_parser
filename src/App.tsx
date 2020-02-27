@@ -1,22 +1,22 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 
-import Editor from "./components/Editor/Editor";
-import InputFieldsList from "./components/InputFieldsList/InputFieldsList";
+import Editor from './components/Editor/Editor';
+import InputFieldsList from './components/InputFieldsList/InputFieldsList';
+import { IEditObj } from './components/InputFieldsList/interfaces/input-fields.interface';
 
 import './App.css';
 
 function App() {
-  const schema =
-`schema Person {
+  const schema = `schema Person {
   numeric: id
   string: firstName
   string: secondName
 }`;
 
-  const [value, setValue] = useState(schema);
-  const [editObj, setEditObj] = useState({ name: '', fields: []});
+  const [value, setValue] = useState<string>(schema);
+  const [editObj, setEditObj] = useState<IEditObj>({ name: '', fields: [] });
 
-  const startParse = (text) => {
+  const startParse = (text: string) => {
     const newText = text
       .replace(/[^a-zA-Z0-9{}: ]/g, ' ')
       .replace(/\s+/g, ' ')
@@ -35,23 +35,21 @@ function App() {
             fieldName: el.split(':')[1],
           }
         )),
-    }
+    };
   };
 
   const onParseClick = () => {
     const tmpObj = startParse(value);
     setEditObj(tmpObj);
-    console.log(tmpObj)
+    console.log(tmpObj);
   };
 
 
   return (
     <div className="App">
-      <InputFieldsList editObj={editObj}/>
-      <Editor schema={schema} state={{value, setValue}}/>
-      <button
-        onClick={onParseClick}
-      >
+      <InputFieldsList editObj={editObj} />
+      <Editor state={{ value, setValue }} />
+      <button type="button" onClick={onParseClick}>
         Parse
       </button>
     </div>
